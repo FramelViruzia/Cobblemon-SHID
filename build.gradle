@@ -55,7 +55,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
-// Ship the license inside both jars
+// Ship the license inside the jar
 jar {
     from('LICENSE') {
         rename { "${it}_${project.archives_base_name}" }
