@@ -47,6 +47,12 @@ final class IvHudRenderer {
     private static final int FOOTER_H = 16;
 
     /** Cobblemon's party overlay: 6 slots of 30px, centred on the screen, then raised by 10px. */
+    /**
+     * Depth the card is drawn at. Vanilla chat sits at z 50, so the card has to be in front of it or
+     * long chat logs cover the card's text. Kept below 400, where tooltips are drawn.
+     */
+    private static final float CARD_Z = 200f;
+
     private static final int PARTY_HALF_HEIGHT = 6 * 30 / 2;
     private static final int PARTY_LIFT = 10;
     private static final int PARTY_SLOT_GAP = 4;
@@ -132,7 +138,7 @@ final class IvHudRenderer {
 
         g.pose().pushPose();
         float[] pos = panelPosition(mc, config, W, H);
-        g.pose().translate(pos[0], pos[1], 0f);
+        g.pose().translate(pos[0], pos[1], CARD_Z);
         g.pose().scale(config.scale, config.scale, 1f);
         drawCard(g, mc.font, pokemon, snap);
         g.pose().popPose();
@@ -352,7 +358,7 @@ final class IvHudRenderer {
         int h = Math.round(9 * ts) + 10;
         g.pose().pushPose();
         float[] pos = panelPosition(mc, config, w, h);
-        g.pose().translate(pos[0], pos[1], 0f);
+        g.pose().translate(pos[0], pos[1], CARD_Z);
         g.pose().scale(config.scale, config.scale, 1f);
         g.flush();
         Matrix4f m = g.pose().last().pose();
@@ -465,7 +471,9 @@ final class IvHudRenderer {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableCull();
-        RenderSystem.disableDepthTest();
+        // Depth test on with depth writes: the card hides the chat even if the chat is drawn after it
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthMask(true);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         buffer = Tesselator.getInstance().begin(VertexFormat.Mode.TRIANGLES, DefaultVertexFormat.POSITION_COLOR);
     }
