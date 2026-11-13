@@ -53,4 +53,18 @@ tasks.withType(JavaCompile).configureEach {
 java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+    // Also build cobblemon-shid-<version>-sources.jar
+    withSourcesJar()
+}
+
+// Ship the license inside both jars
+jar {
+    from('LICENSE') {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+}
+sourcesJar {
+    from('LICENSE') {
+        rename { "${it}_${project.archives_base_name}" }
+    }
 }
