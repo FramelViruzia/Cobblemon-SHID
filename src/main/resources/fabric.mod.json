@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "cobblemon_shid",
+  "version": "${version}",
+  "name": "Cobblemon SHID",
+  "description": "Cobblemon SHID (Simple Hyper-trained IVs Display) is a mod that display IVs HUD that show changes to hyper-trained IVs whenever a player holds and uses IV candies (or caps) on their Pokémon",
+  "authors": [
+    "ViruziA"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.cobblemonshid.ShidClient"
+    ]
+  },
+  "depends": {
+    "java": ">=21",
+    "fabricloader": ">=0.16.0",
+    "minecraft": "1.21.1",
+    "fabric-api": "*",
+    "cobblemon": ">=1.6.0"
+  },
+  "suggests": {
+    "cobblemon_utility": "*"
+  }
+}
