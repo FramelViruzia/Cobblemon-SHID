@@ -3,7 +3,7 @@
   "id": "cobblemon_shid",
   "version": "${version}",
   "name": "Cobblemon SHID",
-  "description": "Cobblemon SHID (Simple Hyper-trained IVs Display) is a mod that display IVs HUD that show changes to hyper-trained IVs whenever a player holds and uses IV candies (or caps) on their Pokémon",
+  "description": "Cobblemon SHID (Simple Hyper-trained IVs Display) is a mod that displays an IV HUD that shows changes to hyper-trained IVs whenever a player holds and uses IV candies (or caps) on their Pokémon",
   "authors": [
     "ViruziA"
   ],
