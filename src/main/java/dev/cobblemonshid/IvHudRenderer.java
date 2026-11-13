@@ -53,9 +53,9 @@ final class IvHudRenderer {
     /** Cobblemon's party slots are 62px wide at the left edge; the card never goes left of this. */
     private static final int PARTY_RIGHT_EDGE = 62 + 8;
     /** Default gap between the card and the crosshair when anchored beside it. */
-    private static final int CROSSHAIR_GAP = 60;
+    private static final int CROSSHAIR_GAP = 65;
     /** How far the card's bottom edge sits below the last party slot. */
-    private static final int BELOW_PARTY = 30;
+    private static final int BELOW_PARTY = 20;
 
     // Colours (ARGB)
     private static final int PANEL_BG = 0xE6141920;
@@ -81,8 +81,6 @@ final class IvHudRenderer {
         0xFFFF7070, 0xFFF5AC78, 0xFFFAE078, 0xFFFA92B2, 0xFFA7DB8D, 0xFF9DB7F5
     };
     private static final String[] STAT_KEYS = {"hp", "atk", "def", "spe", "spd", "spa"};
-
-    private final ChangeTracker tracker = new ChangeTracker();
 
     /** Text size relative to the normal Minecraft font, from the config. */
     private float ts = 2f / 3f;
@@ -131,21 +129,18 @@ final class IvHudRenderer {
         // Read straight from the client's party copy every frame: Cobblemon updates it as soon
         // as the server changes the IVs, so the card is always current.
         IvSnapshot snap = new IvSnapshot(pokemon, OriginalIvStore.originalFor(pokemon));
-        tracker.observe(pokemon.getUuid(), snap);
 
         g.pose().pushPose();
         float[] pos = panelPosition(mc, config, W, H);
         g.pose().translate(pos[0], pos[1], 0f);
         g.pose().scale(config.scale, config.scale, 1f);
-        drawCard(g, mc.font, pokemon, snap, config);
+        drawCard(g, mc.font, pokemon, snap);
         g.pose().popPose();
     }
 
     // ------------------------------------------------------------------ card
 
-    private void drawCard(GuiGraphics g, Font font, Pokemon pokemon, IvSnapshot snap, ShidConfig config) {
-        long window = (long) (config.changeHighlightSeconds * 1000f);
-
+    private void drawCard(GuiGraphics g, Font font, Pokemon pokemon, IvSnapshot snap) {
         // Text pieces whose widths the shapes depend on
         Component tag = Component.translatable("cobblemon_shid.hud.title");
         int tagW = Math.round(width(font, tag)) + 4;
@@ -182,14 +177,6 @@ final class IvHudRenderer {
         fillPolygon(m, fin, FINAL_FILL);
         outlineClosed(m, fin, 1f, FINAL_EDGE);
         outlineClosed(m, outer, 0.75f, CHART_EDGE);
-
-        // A dot that fades out on stats that just changed (green up, red down)
-        for (int i = 0; i < 6; i++) {
-            float strength = tracker.recentStrength(pokemon.getUuid(), i, window);
-            if (strength <= 0f) continue;
-            int rgb = tracker.recentDelta(pokemon.getUuid(), i, window) >= 0 ? 0x5BE36B : 0xFF6464;
-            fillCircle(m, fin[i][0], fin[i][1], 2f, ((int) (255 * strength) << 24) | rgb);
-        }
 
         // Legend squares
         float[] legendX = legendLayout(font, snap);
@@ -535,16 +522,5 @@ final class IvHudRenderer {
         float ny = dx / len * width / 2f;
         tri(m, x1 + nx, y1 + ny, x2 + nx, y2 + ny, x2 - nx, y2 - ny, argb);
         tri(m, x1 + nx, y1 + ny, x2 - nx, y2 - ny, x1 - nx, y1 - ny, argb);
-    }
-
-    private void fillCircle(Matrix4f m, float cx, float cy, float r, int argb) {
-        int segments = 12;
-        for (int i = 0; i < segments; i++) {
-            double a1 = 2 * Math.PI * i / segments;
-            double a2 = 2 * Math.PI * (i + 1) / segments;
-            tri(m, cx, cy,
-                cx + r * (float) Math.cos(a1), cy + r * (float) Math.sin(a1),
-                cx + r * (float) Math.cos(a2), cy + r * (float) Math.sin(a2), argb);
-        }
     }
 }

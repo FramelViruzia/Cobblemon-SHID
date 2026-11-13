@@ -46,8 +46,6 @@ public final class ShidConfig {
     public float textScale = 0.67f;
     /** Size of the stat names (HP, Atk...) relative to the normal font (0.56 = 10 screen px at GUI scale 2). */
     public float statNameScale = 0.56f;
-    /** How long the +/- change markers stay visible after an IV changes. */
-    public float changeHighlightSeconds = 4.0f;
     /** When false, only the items in extraItems trigger the HUD. */
     public boolean useDefaultItems = true;
     /** Additional item ids (e.g. "cobblemon_utility:cobblemax") that should also show the HUD. */
@@ -167,7 +165,6 @@ public final class ShidConfig {
         if (!(textScale >= 0.3f) || textScale > 2f) textScale = 0.67f;
         // Missing from older files: Gson leaves it at 0
         if (!(statNameScale >= 0.3f) || statNameScale > 2f) statNameScale = 0.56f;
-        if (changeHighlightSeconds < 0f) changeHighlightSeconds = 0f;
         if (extraItems == null) extraItems = new ArrayList<>();
     }
 

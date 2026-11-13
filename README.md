@@ -19,7 +19,6 @@ This is a client-side mod.
 | `scale` | `1.0` | Size of the whole card |
 | `textScale` | `0.67` | Text size relative to the normal font (0.67 = 12 screen px at GUI scale 2) |
 | `statNameScale` | `0.56` | Size of the stat names HP, Atk... (0.56 = 10 screen px at GUI scale 2) |
-| `changeHighlightSeconds` | `4.0` | How long the change markers stay |
 | `useDefaultItems` | `true` | Use the built-in trigger item list |
 | `extraItems` | `[]` | More item ids, e.g. `"cobblemon_utility:cobblemax"` |
 
