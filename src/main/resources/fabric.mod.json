@@ -8,10 +8,14 @@
     "ViruziA"
   ],
   "license": "MIT",
+  "icon": "assets/cobblemon_shid/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
       "dev.cobblemonshid.ShidClient"
+    ],
+    "modmenu": [
+      "dev.cobblemonshid.ShidModMenu"
     ]
   },
   "depends": {
@@ -22,6 +26,7 @@
     "cobblemon": ">=1.6.0"
   },
   "suggests": {
-    "cobblemon_utility": "*"
+    "cobblemon_utility": "*",
+    "modmenu": "*"
   }
 }

@@ -18,7 +18,10 @@ import java.util.UUID;
 /** Decides whether the HUD should show, and for which Pokemon. */
 final class TargetFinder {
 
-    /** Result of a lookup: the Pokemon whose IVs we can show, or a reason we cannot. */
+    /**
+     * Result of a lookup: the Pokemon whose IVs we can show. When ownedButUnsynced is true the IVs
+     * are not on the client yet and pokemon is the entity's copy, only good for its name.
+     */
     record Target(Pokemon pokemon, boolean ownedButUnsynced) {}
 
     private TargetFinder() {}
@@ -54,7 +57,7 @@ final class TargetFinder {
 
         UUID owner = entity.getOwnerUUID();
         if (owner != null && owner.equals(player.getUUID())) {
-            return new Target(null, true);
+            return new Target(entity.getPokemon(), true);
         }
         return null;
     }

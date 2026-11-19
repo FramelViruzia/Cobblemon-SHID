@@ -23,8 +23,33 @@ final class IvSnapshot {
     final int[] base = new int[6];
     final int[] fin = new int[6];
     final boolean anyChanged;
+    /** No IV data on the client yet: the card shows "-" instead of numbers. */
+    final boolean unknown;
+
+    /** Fixed values, used for the settings preview. */
+    IvSnapshot(int[] baseValues, int[] finalValues) {
+        boolean any = false;
+        for (int i = 0; i < 6; i++) {
+            base[i] = clamp(baseValues[i]);
+            fin[i] = clamp(finalValues[i]);
+            if (fin[i] != base[i]) any = true;
+        }
+        anyChanged = any;
+        unknown = false;
+    }
+
+    private IvSnapshot() {
+        anyChanged = false;
+        unknown = true;
+    }
+
+    /** Placeholder for an owned Pokemon whose IVs the client has not received yet. */
+    static IvSnapshot unknown() {
+        return new IvSnapshot();
+    }
 
     IvSnapshot(Pokemon pokemon, int[] original) {
+        unknown = false;
         IVs ivs = pokemon.getIvs();
         Map<?, Integer> trained = ivs.getHyperTrainedIVs();
         boolean any = false;

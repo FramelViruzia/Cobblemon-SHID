@@ -23,6 +23,18 @@ repositories {
             includeGroup 'maven.modrinth'
         }
     }
+    // Mod Menu, compiled against only (optional at runtime)
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'TerraformersMC'
+                url = 'https://maven.terraformersmc.com/releases'
+            }
+        }
+        filter {
+            includeGroup 'com.terraformersmc'
+        }
+    }
 }
 
 dependencies {
@@ -32,6 +44,12 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modCompileOnly fabricApi.module('fabric-api-base', project.fabric_api_version)
     modCompileOnly fabricApi.module('fabric-rendering-v1', project.fabric_api_version)
+    modCompileOnly fabricApi.module('fabric-key-binding-api-v1', project.fabric_api_version)
+    modCompileOnly fabricApi.module('fabric-lifecycle-events-v1', project.fabric_api_version)
+    modCompileOnly fabricApi.module('fabric-screen-api-v1', project.fabric_api_version)
+
+    // Settings button in Mod Menu; players without Mod Menu can still edit the json file
+    modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}") { transitive = false }
 
     // Never bundled: the player already has Cobblemon (and its Kotlin runtime) installed
     modCompileOnly "maven.modrinth:cobblemon:${project.cobblemon_modrinth_version}"
