@@ -260,12 +260,12 @@ final class ShidConfigScreen extends Screen {
         }
     }
 
-    /** Narrow screens: the card at its real size (if it fits) in the middle, over the options. */
+    /** Narrow screens: the card at its real size (if it fits) against the right edge, over the options. */
     private void drawPopupPreview(GuiGraphics g) {
         float[] size = previewRenderer.cardSize(working);
         float scale = Math.min(working.scale, maxScale);
         float fit = Math.min(scale, Math.min((width - 16) / size[0], (height - 16) / size[1]));
-        float x = (width - size[0] * fit) / 2f;
+        float x = width - 8 - size[0] * fit;
         float y = (height - size[1] * fit) / 2f;
         previewRenderer.drawPreview(g, font, working, SAMPLE_NAME, SAMPLE, x, y, fit, 300f);
     }

@@ -11,6 +11,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,10 @@ public final class ShidClient implements ClientModInitializer {
     /** The mod's id before it was renamed; its files are moved over once. */
     private static final String OLD_ID = "cobblemon_uehd";
 
+    private static final String KEY_CATEGORY = "key.categories.cobblemon_shid";
+
+    /** Turns the HUD on or off (same as Show HUD). Not bound by default. */
+    private static KeyMapping toggleKey;
     /** Hold to show the mouse and drag the card (when HUD Position is Draggable). */
     private static KeyMapping moveKey;
 
@@ -36,9 +41,11 @@ public final class ShidClient implements ClientModInitializer {
         IvHudRenderer renderer = new IvHudRenderer();
         HudRenderCallback.EVENT.register(renderer::render);
 
-        moveKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
-            "key.cobblemon_shid.move_hud", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT,
-            "key.categories.cobblemon_shid"));
+        // Listed in this order in Controls: Toggle HUD, then Hold to Show Mouse Cursor
+        toggleKey = KeyBindingHelper.registerKeyBinding(new OrderedKeyMapping(
+            "key.cobblemon_shid.toggle_hud", InputConstants.UNKNOWN.getValue(), KEY_CATEGORY, 0));
+        moveKey = KeyBindingHelper.registerKeyBinding(new OrderedKeyMapping(
+            "key.cobblemon_shid.move_hud", GLFW.GLFW_KEY_LEFT_ALT, KEY_CATEGORY, 1));
         ClientTickEvents.END_CLIENT_TICK.register(ShidClient::onClientTick);
 
         // Drag the card while the chat is open
@@ -54,6 +61,17 @@ public final class ShidClient implements ClientModInitializer {
     }
 
     private static void onClientTick(Minecraft client) {
+        while (toggleKey.consumeClick()) {
+            ShidConfig config = ShidConfig.get();
+            config.enabled = !config.enabled;
+            ShidConfig.saveCurrent();
+            if (client.player != null) {
+                // The card only shows while aiming at a Pokemon, so say what happened
+                client.player.displayClientMessage(Component.translatable(
+                    config.enabled ? "cobblemon_shid.toggle.on" : "cobblemon_shid.toggle.off"), true);
+            }
+        }
+
         if (client.screen != null || client.player == null) return;
         if (!moveKey.isDown()) return;
         ShidConfig config = ShidConfig.get();

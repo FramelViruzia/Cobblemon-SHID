@@ -35,7 +35,7 @@ public final class ShidConfig {
     public static final float MIN_SCALE = 0.5f;
     public static final float MAX_SCALE = 3.0f;
     public static final float MIN_FONT = 0.5f;
-    public static final float MAX_FONT = 1.5f;
+    public static final float MAX_FONT = 1.25f;
     public static final float STEP = 0.05f;
 
     public static final HudStyle DEFAULT_STYLE = HudStyle.FULL;

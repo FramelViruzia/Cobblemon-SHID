@@ -37,5 +37,8 @@
   "cobblemon_shid.move.title": "Move HUD",
   "cobblemon_shid.move.hint": "Drag the IV card to move it",
   "key.categories.cobblemon_shid": "Cobblemon SHID",
-  "key.cobblemon_shid.move_hud": "Show mouse when HUD is open to adjust the position"
+  "key.cobblemon_shid.toggle_hud": "Toggle HUD",
+  "key.cobblemon_shid.move_hud": "Hold to Show Mouse Cursor",
+  "cobblemon_shid.toggle.on": "IV HUD: On",
+  "cobblemon_shid.toggle.off": "IV HUD: Off"
 }

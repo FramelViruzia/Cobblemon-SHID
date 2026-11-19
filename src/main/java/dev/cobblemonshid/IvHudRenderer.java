@@ -284,7 +284,10 @@ final class IvHudRenderer {
         int iconSize = lineH + 4;
         int tagW = snap.unknown ? iconSize : Math.round(width(font, tag)) + 4;
 
-        int panelBg = withAlpha(PANEL_BG_RGB, 255 * bgAlpha);
+        // Never fully transparent: the background still has to be drawn (at 1/255, invisible) so it
+        // writes depth and keeps the chat behind the card at every opacity. Alpha 0 is discarded
+        // by the shader and would let the chat show through.
+        int panelBg = withAlpha(PANEL_BG_RGB, Math.max(1, 255 * bgAlpha));
         int border = withAlpha(PANEL_BORDER_RGB, 255 * bgAlpha);
         int tagBg = withAlpha(PANEL_BORDER_RGB, 255 * bgAlpha);
         int divider = withAlpha(0xFFFFFF, DIVIDER_ALPHA * bgAlpha);
@@ -608,7 +611,7 @@ final class IvHudRenderer {
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableCull();
         // Depth test on with depth writes: the card hides the chat even if the chat is drawn after it.
-        // Fully transparent parts are skipped, so they don't hide anything.
+        // The card background covers the whole card, so this holds at any Background Opacity.
         RenderSystem.enableDepthTest();
         RenderSystem.depthMask(true);
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
