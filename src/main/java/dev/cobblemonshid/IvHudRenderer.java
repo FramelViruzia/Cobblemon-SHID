@@ -53,10 +53,12 @@ final class IvHudRenderer {
     private static final int FOOTER_H = 16;
 
     /**
-     * Depth the card is drawn at. Vanilla chat sits at z 50, so the card has to be in front of it or
-     * long chat logs cover the card's text. Kept below 400, where tooltips are drawn.
+     * Depth the card is drawn at. The vanilla HUD is drawn in layers, each pushed 200 further
+     * forward, and the chat is one of the last ones (well over z 2000). The card has to be in front
+     * of all of them or the chat covers it. The HUD's depth is cleared before screens are drawn, so
+     * this never puts the card over a menu; the GUI depth range goes to about 10000.
      */
-    private static final float CARD_Z = 200f;
+    private static final float CARD_Z = 5000f;
 
     /** Cobblemon's party overlay: 6 slots of 30px, centred on the screen, then raised by 10px. */
     private static final int PARTY_HALF_HEIGHT = 6 * 30 / 2;
