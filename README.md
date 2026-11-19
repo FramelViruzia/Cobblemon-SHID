@@ -19,7 +19,7 @@ Open it from Mod Menu.
 | HUD Style | Full / Compact | Full |
 | HUD Position | Locked / Draggable | Locked |
 | HUD Size | 0.5x to 3.0x (Based on players' GUI scale) | 1.0x |
-| Font Size | 0.5x to 1.5x | 1.0x |
+| Font Size | 0.5x to 1.25x | 1.0x |
 | Background Opacity | 0% (Transparent) to 100% | 90% |
 
 **How to reposition the card:** set HUD Position to Draggable, then drag the card with the mouse while the chat
